@@ -1,46 +1,59 @@
 package com.example.spider.product;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.junit.runner.RunWith;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringRunner;
 
+import java.text.ParseException;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created with IntelliJ IDEA.
- * Description:
- * User: WangNan
- * Email：nan.wang@htouhui.com
- * Date: 2017-12-20
- * Time: 下午3:58
+ * Selenium + WebDriver 练习
+ *
+ * @author wangnan
  */
 @Slf4j
 @SuppressWarnings("all")
-public class HtmlTest {
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class HtmlTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     private static WebDriver webDriver;
 
     @Before
     public void before() {
-        System.getProperties().setProperty("webdriver.chrome.driver", "/Users/wangnan/Downloads/chromedriver");
+        System.getProperties().setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
         webDriver = new ChromeDriver();
+    }
+
+//    @After
+    public void after() {
+        if (webDriver != null) {
+            webDriver.quit();
+        }
     }
 
     /**
      * 登陆支付宝
      */
     @Test
-    public void testLogin() throws InterruptedException {
+    @Commit
+    public void testLogin() throws InterruptedException, ParseException {
         String username = "";
         String password = "";
 
-        WebDriver webDriver = new ChromeDriver();
         webDriver.get("https://authzui.alipay.com/login/index.htm");
         Actions action = new Actions(webDriver);
 
@@ -78,11 +91,29 @@ public class HtmlTest {
 
         /******************************* 登陆成功后页面 *************************************/
 
+        // 获取跳转后地址
         String currentUrl = webDriver.getCurrentUrl();
         System.out.printf("登陆成功后跳转地址 : %s%n", currentUrl);
 
+        /*********** 抓取首页信息 *************/
+        // 账户余额 :
+        String balanceXpath = "//*[@id=\"J-assets-balance\"]/div[1]/div/div[2]/div/strong";
+        // 点击显示余额
+        try {
+            webDriver.findElement(By.xpath("//*[@id=\"J-assets-balance\"]/div[2]/div/i")).click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String balance = webDriver.findElement(By.xpath(balanceXpath)).getText();
+        System.out.printf("账户余额 : %s%n", balance);
+
         // 余额宝金额 :
         String yebprodAmountXpath = "//*[@id=\"J-assets-mfund-amount\"]/strong";
+        try {
+            webDriver.findElement(By.xpath("//*[@id=\"J-assets-mfund\"]/div[2]/div[1]/i")).click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String yebprodAmount = webDriver.findElement(By.xpath(yebprodAmountXpath)).getText();
         System.out.printf("余额宝余额 : %s%n", yebprodAmount);
 
@@ -95,31 +126,119 @@ public class HtmlTest {
         String huabeiAllAmountXpath = "//*[@id=\"J-assets-pcredit\"]/div/div/div[2]/div/p[2]/strong";
         String huabeiAllAmount = webDriver.findElement(By.xpath(huabeiAllAmountXpath)).getText();
         System.out.printf("花呗全部额度 : %s%n", huabeiAllAmount);
+        /************************************/
 
-        // 查询所有交易记录 : //*[@id="J-trend-consume"]/div/div[2]/div[3]/a[2]
+        // 获取 cookie
+        Cookie alipayCookie = webDriver.manage().getCookieNamed("ALIPAYJSESSIONID");
+        Cookie jsessionidCookie = webDriver.manage().getCookieNamed("JSESSIONID");
+        Cookie sessionCookieNameIdCookie = webDriver.manage().getCookieNamed("session.cookieNameId");
+
+        // 添加 COOKIE 值
+        if (alipayCookie != null) {
+            webDriver.manage().addCookie(alipayCookie);
+        }
+        if (jsessionidCookie != null) {
+            webDriver.manage().addCookie(jsessionidCookie);
+        }
+        if (sessionCookieNameIdCookie != null) {
+            webDriver.manage().addCookie(sessionCookieNameIdCookie);
+        }
+
+        // 查询所有交易记录超链接
         String hrefToAllPayRecord = "//*[@id=\"J-trend-consume\"]/div/div[2]/div[3]/a[2]";
         String href = webDriver.findElement(By.xpath(hrefToAllPayRecord)).getAttribute("href");
-//        webDriver.navigate().to(href);
+
+        // 点击 账户设置
+        Thread.sleep(5000);
+        String accountSetXpath = "//*[@id=\"globalContainer\"]/div[2]/div/div[2]/ul/li[3]/a";
+        webDriver.findElement(By.xpath(accountSetXpath)).click();
+
+        /******************************* 账户设置页面 *************************************/
+
+        // 是否实名认证
+        String authXpath = "//*[@id=\"account-main\"]/div/table/tbody/tr[1]/td[1]/span[4]";
+        String auth = webDriver.findElement(By.xpath(authXpath)).getText();
+        System.out.printf("是否实名认证 : %s%n", auth);
+
+        // 注册时间
+        String regTimeXpath = "//*[@id=\"account-main\"]/div/table/tbody/tr[7]/td[1]";
+        String regTime = webDriver.findElement(By.xpath(regTimeXpath)).getText();
+        regTime = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss").format(FastDateFormat.getInstance("yyyy年MM月dd日").parse(regTime));
+        System.out.printf("注册时间 : %s%n", regTime);
+
+        // 绑定银行卡数量
+        String bindingBankCardCountXpath = "//*[@id=\"J-bankcards\"]/td[1]/span";
+        String bindingBankCardCount = webDriver.findElement(By.xpath(bindingBankCardCountXpath)).getText();
+        System.out.printf("绑定银行卡数量 : %s%n", bindingBankCardCount);
+
+        String infoSql = String.format("INSERT INTO pdl_alipay_info(user_id, balance, yeb_balance, hb_all_balance, hb_rest_balance, binging_bank_card_count, is_real_name_authentication, reg_time) VALUES ('1001', %s, %s, %s, %s, %s, %s, '%s')", balance, yebprodAmount, huabeiAllAmount, huabeiRestAmount, bindingBankCardCount, StringUtils.equals("已认证", auth) ? 1 : 0, regTime);
+        jdbcTemplate.execute(infoSql);
+
+        Thread.sleep(5000);
+        webDriver.navigate().to(href);
 
         /******************************* 查询所有交易记录页面 *************************************/
 
-//        currentUrl = webDriver.getCurrentUrl();
-//        System.out.printf("点击查询所有交易记录后跳转地址 : %s%n", currentUrl);
-//
-//        // 交易记录 Table : //*[@id="tradeRecordsIndex"]
-//        //
-//
-//        webDriver.findElement(By.className("page-next")).click();
-//
-//        Thread.sleep(5000);
-//        webDriver.findElement(By.className("page-next")).click();
+        // 获取跳转后地址
+        currentUrl = webDriver.getCurrentUrl();
+        System.out.printf("点击查询所有交易记录后跳转地址 : %s%n", currentUrl);
 
-        // 下一页 : //*[@id="J_home-record-container"]/div[2]/div/div[2]/div[2]/div/a[1]
-        //         //*[@id="J_home-record-container"]/div[2]/div/div[2]/div[2]/div/a[3]
+        // 抓取交易记录
+        System.out.println("=========================");
+        System.out.println("交易内容:");
+        WebElement nextPage = null;
+        int count = 0;
+        do {
+            if (nextPage != null) {
+                nextPage.click();
+            }
 
-        // 关闭页面
-//        webDriver.close();
+            try {
+                // 获取交易记录详情
+                String tradeRecordTbodyXpath = "//*[@id=\"tradeRecordsIndex\"]/tbody";
+                List<WebElement> trList = webDriver.findElement(By.xpath(tradeRecordTbodyXpath)).findElements(By.tagName("tr"));
+                for (WebElement tr : trList) {
+                    String recordName = tr.findElement(By.className("name")).findElement(By.className("consume-title")).getText();
+                    String recordAmount = tr.findElement(By.className("amount")).getText();
+                    String recordStatus = tr.findElement(By.className("status")).getText();
+                    System.out.printf("交易名称 : %s, 交易金额 : %s, 交易状态 : %s%n", recordName, recordAmount, recordStatus);
 
+                    String recordInfoSql = String.format("INSERT INTO pdl_alipay_pay_record(user_id, name, amount, status) VALUES ('1001', %s, %s, %s)", recordName, recordAmount, recordStatus);
+                    jdbcTemplate.execute(recordInfoSql);
+                    count++;
+                }
+
+                // 打印 COOKIE 值
+                Set<Cookie> cookies = webDriver.manage().getCookies();
+                for (Cookie c : cookies) {
+                    System.out.printf("%s : %s%n", c.getName(), c.getValue());
+                }
+
+                // 获取 COOKIE 值
+                alipayCookie = webDriver.manage().getCookieNamed("ALIPAYJSESSIONID");
+                jsessionidCookie = webDriver.manage().getCookieNamed("JSESSIONID");
+                sessionCookieNameIdCookie = webDriver.manage().getCookieNamed("session.cookieNameId");
+            } catch (Exception e) {
+                break;
+            }
+
+            // 添加 COOKIE 值
+            if (alipayCookie != null) {
+                webDriver.manage().addCookie(alipayCookie);
+            }
+            if (jsessionidCookie != null) {
+                webDriver.manage().addCookie(jsessionidCookie);
+            }
+            if (sessionCookieNameIdCookie != null) {
+                webDriver.manage().addCookie(sessionCookieNameIdCookie);
+            }
+
+            // 获取跳转到下一页的链接地址
+            Thread.sleep(2000);
+            nextPage = webDriver.findElement(By.className("page-next"));
+        } while (nextPage != null);
+        System.out.printf("交易记录条数 : %d%n", count);
+        System.out.println("=========================");
     }
 
 
