@@ -62,7 +62,7 @@ public class AlipayInfo {
     /**
      * 注册日期
      */
-    private String regTime;
+    private String registerDate;
 
     /**
      * 是否实名认证
@@ -87,7 +87,7 @@ public class AlipayInfo {
     /**
      * 账户余额
      */
-    private String balance;
+    private BigDecimal balance;
 
     /**
      * 余额宝总收入
@@ -97,7 +97,7 @@ public class AlipayInfo {
     /**
      * 是否身份证认证
      */
-    private String isIdCard;
+    private String isIdcard;
 
     /**
      * 余额宝总金额
