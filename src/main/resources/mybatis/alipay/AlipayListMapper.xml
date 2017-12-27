@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.spider.alipay1.mapper.AlipayListMapper">
-  <resultMap id="BaseResultMap" type="com.example.spider.alipay1.entity.AlipayList">
+<mapper namespace="com.example.spider.alipay.mapper.AlipayListMapper">
+
+  <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayList">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="pay_time" jdbcType="BIGINT" property="payTime" />
@@ -19,7 +20,7 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
-  <insert id="insert" parameterType="com.example.spider.alipay1.entity.AlipayList">
+  <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayList">
     insert into pdl_alipay_list (user_id, pay_time, trade_type,
     trade_no_type, trade_no, receiver_name,
     amount, status, source,

@@ -1,6 +1,6 @@
 package com.example.spider.alipay.mapper;
 
-import com.example.spider.alipay.entity.AlipayBankCard;
+import com.example.spider.alipay.entity.AlipayChargeAccount;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,32 +16,29 @@ import static org.junit.Assert.assertEquals;
  * User: WangNan
  * Email：nan.wang@htouhui.com
  * Date: 2017-12-27
- * Time: 上午11:31
+ * Time: 下午1:12
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AlipayBankCardMapperTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class AlipayChargeAccountMapperTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private AlipayBankCardMapper alipayBankCardMapper;
+    private AlipayChargeAccountMapper alipayChargeAccountMapper;
 
     @Test
     public void insert() {
-        AlipayBankCard alipayBankCard = AlipayBankCard.builder()
+        AlipayChargeAccount chargeAccount = AlipayChargeAccount.builder()
                 .userId(1001L)
-                .alipayName("test")
-                .cardLastNum("1001")
-                .openStatus("yes")
-                .applyTime(System.currentTimeMillis())
-                .bankName("ABC")
-                .cardType("储蓄卡")
-                .mobile("133****3333")
-                .activeDate("2017-11-11")
-                .showUserName("test")
+                .loginName("test")
+                .chargeItem("phone")
+                .area("beijing")
+                .chargeUnit("中国联通")
+                .chargeAccount("test")
+                .chargeNumber("13333333333")
+                .chargeReminder("reminder")
                 .build();
 
-        int insert = alipayBankCardMapper.insert(alipayBankCard);
+        int insert = alipayChargeAccountMapper.insert(chargeAccount);
         assertEquals(1, insert);
     }
-
 }
