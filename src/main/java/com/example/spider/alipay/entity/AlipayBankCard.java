@@ -16,7 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Builder
-public class AlipayBindBankCard {
+public class AlipayBankCard {
 
     /**
      * ID

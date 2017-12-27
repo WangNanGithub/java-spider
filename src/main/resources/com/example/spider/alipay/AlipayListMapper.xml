@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.spider.alipay1.mapper.AlipayListMapper">
+  <resultMap id="BaseResultMap" type="com.example.spider.alipay1.entity.AlipayList">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="pay_time" jdbcType="BIGINT" property="payTime" />
+    <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
+    <result column="trade_no_type" jdbcType="VARCHAR" property="tradeNoType" />
+    <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="source" jdbcType="VARCHAR" property="source" />
+    <result column="alipay_name" jdbcType="VARCHAR" property="alipayName" />
+    <result column="trade_classification" jdbcType="VARCHAR" property="tradeClassification" />
+    <result column="trade_detail_url" jdbcType="VARCHAR" property="tradeDetailUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.example.spider.alipay1.entity.AlipayList">
+    insert into pdl_alipay_list (user_id, pay_time, trade_type,
+    trade_no_type, trade_no, receiver_name,
+    amount, status, source,
+    alipay_name, trade_classification, trade_detail_url
+    )
+    values (#{userId,jdbcType=BIGINT}, #{payTime,jdbcType=BIGINT}, #{tradeType,jdbcType=VARCHAR},
+    #{tradeNoType,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR},
+    #{amount,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR},
+    #{alipayName,jdbcType=VARCHAR}, #{tradeClassification,jdbcType=VARCHAR}, #{tradeDetailUrl,jdbcType=VARCHAR}
+    )
+  </insert>
+</mapper>

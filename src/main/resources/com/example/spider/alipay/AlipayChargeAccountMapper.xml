@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.spider.alipay1.mapper.AlipayChargeAccountMapper">
+  <resultMap id="BaseResultMap" type="com.example.spider.alipay1.entity.AlipayChargeAccount">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="charge_item" jdbcType="VARCHAR" property="chargeItem" />
+    <result column="area" jdbcType="VARCHAR" property="area" />
+    <result column="charge_unit" jdbcType="VARCHAR" property="chargeUnit" />
+    <result column="charge_account" jdbcType="VARCHAR" property="chargeAccount" />
+    <result column="charge_number" jdbcType="VARCHAR" property="chargeNumber" />
+    <result column="charge_reminder" jdbcType="VARCHAR" property="chargeReminder" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+
+  <insert id="insert" parameterType="com.example.spider.alipay1.entity.AlipayChargeAccount">
+    insert into pdl_alipay_charge_account (user_id, login_name, charge_item,
+    area, charge_unit, charge_account,
+    charge_number, charge_reminder
+    )
+    values (#{userId,jdbcType=BIGINT}, #{loginName,jdbcType=VARCHAR}, #{chargeItem,jdbcType=VARCHAR},
+    #{area,jdbcType=VARCHAR}, #{chargeUnit,jdbcType=VARCHAR}, #{chargeAccount,jdbcType=VARCHAR},
+    #{chargeNumber,jdbcType=VARCHAR}, #{chargeReminder,jdbcType=VARCHAR}
+    )
+  </insert>
+</mapper>
