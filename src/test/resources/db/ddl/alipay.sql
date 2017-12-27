@@ -80,7 +80,7 @@ CREATE TABLE `pdl_alipay_charge_account` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
   `login_name` VARCHAR(50) DEFAULT NULL COMMENT '支付宝账户名',
-  `charge_item` VARCHAR(4) DEFAULT NULL COMMENT '缴费项目',
+  `charge_item` VARCHAR(50) DEFAULT NULL COMMENT '缴费项目',
   `area` VARCHAR(50) DEFAULT NULL COMMENT '地区',
   `charge_unit` VARCHAR(50) DEFAULT NULL COMMENT '收费单位',
   `charge_account` VARCHAR(50) DEFAULT NULL COMMENT '户名',
