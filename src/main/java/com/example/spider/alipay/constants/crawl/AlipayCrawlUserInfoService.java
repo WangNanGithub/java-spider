@@ -108,7 +108,7 @@ public class AlipayCrawlUserInfoService implements IndexELement, AccountElement 
     /**
      * 抓取用户账户信息
      */
-    public void crawlAccountInfo(WebDriver webDriver, AlipayInfo alipayInfo) {
+    private void crawlAccountInfo(WebDriver webDriver, AlipayInfo alipayInfo) {
         try {
             // 跳转页面
             webDriver.navigate().to(ACCOUNT_SET_URL);
