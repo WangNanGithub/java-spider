@@ -1,12 +1,26 @@
 package com.example.spider.alipay1.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @author 
+ * @author
  */
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+@Builder
 public class AlipayBankCard implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * ID
+     */
     private Long id;
 
     /**
@@ -69,109 +83,5 @@ public class AlipayBankCard implements Serializable {
      */
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getAlipayName() {
-        return alipayName;
-    }
-
-    public void setAlipayName(String alipayName) {
-        this.alipayName = alipayName;
-    }
-
-    public String getCardLastNum() {
-        return cardLastNum;
-    }
-
-    public void setCardLastNum(String cardLastNum) {
-        this.cardLastNum = cardLastNum;
-    }
-
-    public String getOpenStatus() {
-        return openStatus;
-    }
-
-    public void setOpenStatus(String openStatus) {
-        this.openStatus = openStatus;
-    }
-
-    public Long getApplyTime() {
-        return applyTime;
-    }
-
-    public void setApplyTime(Long applyTime) {
-        this.applyTime = applyTime;
-    }
-
-    public String getBankName() {
-        return bankName;
-    }
-
-    public void setBankName(String bankName) {
-        this.bankName = bankName;
-    }
-
-    public String getCardType() {
-        return cardType;
-    }
-
-    public void setCardType(String cardType) {
-        this.cardType = cardType;
-    }
-
-    public String getMobile() {
-        return mobile;
-    }
-
-    public void setMobile(String mobile) {
-        this.mobile = mobile;
-    }
-
-    public String getActiveDate() {
-        return activeDate;
-    }
-
-    public void setActiveDate(String activeDate) {
-        this.activeDate = activeDate;
-    }
-
-    public String getShowUserName() {
-        return showUserName;
-    }
-
-    public void setShowUserName(String showUserName) {
-        this.showUserName = showUserName;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
 }
