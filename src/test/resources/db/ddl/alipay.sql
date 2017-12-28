@@ -31,8 +31,8 @@ CREATE TABLE `pdl_alipay_info` (
 -- ----------------------------
 -- 支付宝交易记录表
 -- ----------------------------
-DROP TABLE IF EXISTS `pdl_alipay_list`;
-CREATE TABLE `pdl_alipay_list` (
+DROP TABLE IF EXISTS `pdl_alipay_trade_record_info`;
+CREATE TABLE `pdl_alipay_trade_record_info` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
   `pay_time` BIGINT DEFAULT NULL COMMENT '支付时间',
@@ -45,7 +45,7 @@ CREATE TABLE `pdl_alipay_list` (
   `source` VARCHAR(50) DEFAULT NULL COMMENT '来源',
   `alipay_name` VARCHAR(50) DEFAULT NULL COMMENT '支付宝账户名',
   `trade_classification` VARCHAR(50) DEFAULT NULL COMMENT '支付宝交易分类',
-  `trade_detail_url` VARCHAR(50) DEFAULT NULL COMMENT '支付宝交易详情URL',
+  `trade_detail_url` VARCHAR(255) DEFAULT NULL COMMENT '支付宝交易详情URL',
   `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`id`)
@@ -59,7 +59,7 @@ CREATE TABLE `pdl_alipay_bank_card` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
   `alipay_name` VARCHAR(50) DEFAULT NULL COMMENT '支付宝账户名',
-  `card_last_num` VARCHAR(4) DEFAULT NULL COMMENT '银行卡后4位',
+  `card_last_num` VARCHAR(50) DEFAULT NULL COMMENT '银行卡后4位',
   `open_status` VARCHAR(50) DEFAULT NULL COMMENT '快捷支付开通状态',
   `apply_time` BIGINT DEFAULT NULL COMMENT '银行卡申请时间',
   `bank_name` VARCHAR(50) DEFAULT NULL COMMENT '银行名称',

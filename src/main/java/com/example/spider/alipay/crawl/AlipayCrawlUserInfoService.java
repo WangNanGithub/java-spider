@@ -1,11 +1,14 @@
-package com.example.spider.alipay.constants.crawl;
+package com.example.spider.alipay.crawl;
 
-import com.example.spider.alipay.constants.element.AccountElement;
-import com.example.spider.alipay.constants.element.IndexELement;
+import com.example.spider.alipay.constants.AccountElement;
+import com.example.spider.alipay.constants.HomeELement;
 import com.example.spider.alipay.entity.AlipayInfo;
+import com.example.spider.alipay.mapper.AlipayInfoMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 
@@ -18,7 +21,11 @@ import java.math.BigDecimal;
  * Time: 下午3:59
  */
 @Slf4j
-public class AlipayCrawlUserInfoService implements IndexELement, AccountElement {
+@Service
+public class AlipayCrawlUserInfoService implements HomeELement, AccountElement {
+
+    @Autowired
+    private AlipayInfoMapper alipayInfoMapper;
 
     /**
      * 抓取用户信息
@@ -26,6 +33,7 @@ public class AlipayCrawlUserInfoService implements IndexELement, AccountElement 
     public WebDriver crawUserInfo(WebDriver webDriver) {
 
         AlipayInfo alipayInfo = new AlipayInfo();
+        alipayInfo.setUserId(1001L);
 
         crawlYeInfo(webDriver, alipayInfo);
         crawlYebInfo(webDriver, alipayInfo);
@@ -33,8 +41,20 @@ public class AlipayCrawlUserInfoService implements IndexELement, AccountElement 
         crawlAccountInfo(webDriver, alipayInfo);
 
         log.info("alipay info : {}", alipayInfo);
+        alipayInfoMapper.insert(alipayInfo);
 
         return webDriver;
+    }
+
+    /**
+     * 抓取账户名
+     * @param webDriver
+     * @param alipayInfo
+     */
+    private void crawlLoginName(WebDriver webDriver, AlipayInfo alipayInfo) {
+        String loginName = webDriver.findElement(By.xpath(LOGIN_NAME_XPATH)).getText();
+        log.info("账户名 : {}", loginName);
+        alipayInfo.setLoginName(loginName);
     }
 
     /**

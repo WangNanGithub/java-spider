@@ -1,11 +1,13 @@
-package com.example.spider.alipay.constants.crawl;
+package com.example.spider.alipay.crawl;
 
-import com.example.spider.alipay.constants.element.LoginElement;
+import com.example.spider.alipay.constants.LoginElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.springframework.stereotype.Service;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,14 +17,18 @@ import org.openqa.selenium.interactions.Actions;
  * Date: 2017-12-27
  * Time: 下午3:21
  */
+@Service
 public class AlipayCrawlLoginService implements LoginElement {
 
 
     /**
      * 登陆支付宝
+     * @param username
+     * @param password
      */
-    public WebDriver login(WebDriver webDriver, String username, String password) throws InterruptedException {
-
+    public WebDriver login(String username, String password) throws InterruptedException {
+        System.getProperties().setProperty("webdriver.chrome.driver", "/usr/local/bin/chromedriver");
+        WebDriver webDriver = new ChromeDriver();
         webDriver.get(LOGIN_URL);
         Actions action = new Actions(webDriver);
 

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -16,8 +17,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Builder
-public class AlipayChargeAccount {
+public class AlipayChargeAccount implements Serializable {
 
+    private static final long serialVersionUID = 746888954168456867L;
     /**
      * ID
      */

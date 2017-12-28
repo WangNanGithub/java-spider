@@ -1,4 +1,4 @@
-package com.example.spider.alipay.constants.element;
+package com.example.spider.alipay.constants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,9 +13,10 @@ public interface TradeElement {
     /**
      * 交易记录
      */
-    String TRADE_URL = "https://consumeprod.alipay.com/record/index.htm";
+    String TRADE_URL = "https://consumeprod.alipay.com/record/index.htm";   // 交易记录页 URL
+    String HOME_URL = "https://my.alipay.com/portal/i.htm";                // 支付宝首页 URL
 
-    String TRADE_TABLE_XPATH = "//*[@id=\"tradeRecordsIndex\"]/tbody";
+    String TRADE_TABLE_XPATH = "//*[@id=\"tradeRecordsIndex\"]/tbody"; // //*[@id="tradeRecordsIndex"]/tbody
 
     String TRADE_TYPE_CLASS = "img";                    // 分类
     String TRADE_DATE_CLASS = "time";                   // 交易时间
@@ -31,4 +32,8 @@ public interface TradeElement {
 
     String TRADE_STATUS_CLASS = "status";               // 交易状态
 
+    String DETAIL_TRADE_TITLE_XPATH = "//*[@id=\"fundDom\"]/div[1]/p[1]/span"; // 详情页交易名称
+    String DETAIL_TRADE_NAME_XPATH = "//*[@id=\"fundDom\"]/div[1]/p[2]/span";
+    String DETAIL_TRADE_NO_XPATH = "//*[@id=\"fundDom\"]/div[1]/p[3]/span";
+    String DETAIL_TRADE_AMOUNT_XPATH = "//*[@id=\"fundDom\"]/div[2]/table/tbody/tr[1]/td[1]";
 }

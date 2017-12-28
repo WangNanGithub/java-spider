@@ -1,4 +1,4 @@
-package com.example.spider.alipay.constants.element;
+package com.example.spider.alipay.constants;
 
 /**
  * Created with IntelliJ IDEA.
@@ -8,7 +8,7 @@ package com.example.spider.alipay.constants.element;
  * Date: 2017-12-27
  * Time: 下午1:59
  */
-public interface IndexELement {
+public interface HomeELement {
 
     /**
      * 登陆后首页元素

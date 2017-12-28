@@ -6,6 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AlipayBankCardMapper {
 
-    int insert(AlipayBankCard record);
+    int insert(AlipayBankCard alipayBankCard);
 
 }

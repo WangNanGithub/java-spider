@@ -1,6 +1,6 @@
 package com.example.spider.alipay.mapper;
 
-import com.example.spider.alipay.entity.AlipayList;
+import com.example.spider.alipay.entity.AlipayTradeRecord;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +22,14 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class AlipayListMapperTest extends AbstractTransactionalJUnit4SpringContextTests {
+public class AlipayTradeRecordMapperTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private AlipayListMapper alipayListMapper;
+    private AlipayTradeRecordMapper alipayListMapper;
 
     @Test
     public void insert() {
-        AlipayList alipayList = AlipayList.builder()
+        AlipayTradeRecord alipayTradeRecord = AlipayTradeRecord.builder()
                 .userId(1001L)
                 .payTime(System.currentTimeMillis())
                 .tradeType("手机充值")
@@ -44,7 +44,7 @@ public class AlipayListMapperTest extends AbstractTransactionalJUnit4SpringConte
                 .tradeDetailUrl("http://www.test.com")
                 .build();
 
-        int insert = alipayListMapper.insert(alipayList);
+        int insert = alipayListMapper.insert(alipayTradeRecord);
         assertEquals(1, insert);
 
     }

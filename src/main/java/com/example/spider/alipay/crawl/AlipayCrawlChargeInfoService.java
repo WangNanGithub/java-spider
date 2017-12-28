@@ -1,11 +1,14 @@
-package com.example.spider.alipay.constants.crawl;
+package com.example.spider.alipay.crawl;
 
-import com.example.spider.alipay.constants.element.ChargeElement;
+import com.example.spider.alipay.constants.ChargeElement;
 import com.example.spider.alipay.entity.AlipayChargeAccount;
+import com.example.spider.alipay.mapper.AlipayChargeAccountMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -18,7 +21,11 @@ import java.util.List;
  * Time: 下午5:04
  */
 @Slf4j
+@Service
 public class AlipayCrawlChargeInfoService implements ChargeElement {
+
+    @Autowired
+    private AlipayChargeAccountMapper alipayChargeAccountMapper;
     
     public WebDriver crawlChargeInfo(WebDriver webDriver) {
         webDriver.navigate().to(CHARGE_URL);
@@ -35,6 +42,7 @@ public class AlipayCrawlChargeInfoService implements ChargeElement {
             String reminder = tdList.get(5).getText();
 
             AlipayChargeAccount chargeAccount = AlipayChargeAccount.builder()
+                    .userId(1001L)
                     .chargeItem(item)
                     .area(area)
                     .chargeUnit(unit)
@@ -43,6 +51,7 @@ public class AlipayCrawlChargeInfoService implements ChargeElement {
                     .chargeReminder(reminder)
                     .build();
             log.info("charge info : {}", chargeAccount);
+            alipayChargeAccountMapper.insert(chargeAccount);
         }
 
         return webDriver;

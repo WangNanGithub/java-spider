@@ -1,4 +1,4 @@
-package com.example.spider.alipay.constants.element;
+package com.example.spider.alipay.constants;
 
 /**
  * Created with IntelliJ IDEA.
