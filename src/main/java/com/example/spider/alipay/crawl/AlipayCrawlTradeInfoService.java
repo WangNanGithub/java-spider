@@ -3,6 +3,8 @@ package com.example.spider.alipay.crawl;
 import com.example.spider.alipay.constants.TradeElement;
 import com.example.spider.alipay.entity.AlipayTradeRecord;
 import com.example.spider.alipay.mapper.AlipayTradeRecordMapper;
+import com.example.spider.crawl.annotation.Crawl;
+import com.example.spider.crawl.service.CrawlService;
 import lombok.extern.slf4j.Slf4j;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
@@ -22,6 +24,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.example.spider.crawl.entity.CrawlType.ZHI_FU_BAO;
+
 /**
  * Created with IntelliJ IDEA.
  * Description:
@@ -31,16 +35,20 @@ import java.util.regex.Pattern;
  * Time: 下午5:28
  */
 @Slf4j
+@Crawl(name = ZHI_FU_BAO)
 @Service
-public class AlipayCrawlTradeInfoService implements TradeElement {
+public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
 
     @Autowired
     private AlipayTradeRecordMapper alipayTradeRecordMapper;
 
+    private List<AlipayTradeRecord> data = new ArrayList<>();
+
     /**
      * 抓取交易记录信息
      */
-    public WebDriver crawlTradeRecordInfo(WebDriver webDriver) throws InterruptedException {
+    @Override
+    public WebDriver crawl(WebDriver webDriver, Long userId) throws Exception {
         webDriver.navigate().to(TRADE_URL);
 
         WebElement nextPage = null;
@@ -53,12 +61,13 @@ public class AlipayCrawlTradeInfoService implements TradeElement {
 
             // 抓取数据
             try {
-                count = crawl(webDriver, count);
+                count = crawlTradeRecordInfo(webDriver, userId, count);
             } catch (Exception e) {
+                log.error("trade info error!", e);
                 if (count == 0) {
                     webDriver.navigate().to(HOME_URL);
                     webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                    crawl(webDriver, count);
+                    crawlTradeRecordInfo(webDriver, userId, count);
                 }
                 break;
             }
@@ -76,13 +85,13 @@ public class AlipayCrawlTradeInfoService implements TradeElement {
         return webDriver;
     }
 
-    private int crawl1(WebDriver webDriver, int count) {
+    private int crawlTradeRecordInfo(WebDriver webDriver, Long userId, int count) throws Exception{
         // 获取交易记录详情
         List<WebElement> trList = webDriver.findElement(By.xpath(TRADE_TABLE_XPATH)).findElements(By.tagName("tr"));
         log.info("交易记录数量 : {}", trList.size());
 
         for (WebElement tr : trList) {
-            AlipayTradeRecord record = AlipayTradeRecord.builder().userId(1001L).build();
+            AlipayTradeRecord record = AlipayTradeRecord.builder().userId(userId).build();
 
             String date = tr.findElement(By.className(TRADE_DATE_CLASS)).getText();
             Pattern p = Pattern.compile("\\s+");
@@ -91,73 +100,22 @@ public class AlipayCrawlTradeInfoService implements TradeElement {
             date = date.replaceAll("\\.", "-");
             if (date.contains("今天")) {
                 date = date.replace("今天", LocalDate.now().toString("yyyy-MM-dd"));
+            } else if (date.contains("昨天")) {
+                date = date.replace("今天", LocalDate.now().plusDays(-1).toString("yyyy-MM-dd"));
             }
             log.info("交易时间 : {}", date);
             Date payDate = null;
             try {
                 payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
             } catch (Exception e) {
-                payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd")).toDate();
+                try {
+                    payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd")).toDate();
+                } catch (Exception e1) {
+                    payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm")).toDate();
+                }
             }
 
-            record.setPayTime(payDate.getTime());
-
-            String recordName = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_TITLE_CLASS)).getText();
-            log.info("交易名称 : {}", recordName);
-            record.setTradeType(recordName);
-
-            String name = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_NAME_CLASS)).getText();
-            log.info("收款方名称 : {}", name);
-            record.setReceiverName(name);
-
-            String number = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_NO_CLASS)).getAttribute("title");
-            log.info("交易号 : {}", number);
-            record.setTradeNo(number);
-
-            String recordAmount = tr.findElement(By.className(TRADE_AMOUNT_CLASS)).getText();
-            log.info("交易金额 : {}", recordAmount);
-            recordAmount = recordAmount.replaceAll(" ", "");
-            record.setAmount(new BigDecimal(recordAmount));
-
-            String recordStatus = tr.findElement(By.className(TRADE_STATUS_CLASS)).getText();
-            log.info("交易状态 : {}", recordStatus);
-            record.setStatus(recordStatus);
-
-            String detail = tr.findElement(By.className(TradeElement.TRADE_DETAIL_CLASS)).findElement(By.className(TRADE_DETAIL_URL_CLASS)).getAttribute("href");
-            log.info("交易详情 URL : {}", detail);
-            record.setTradeDetailUrl(detail);
-
-            alipayTradeRecordMapper.insert(record);
-            count++;
-        }
-        return count;
-    }
-
-    private int crawl(WebDriver webDriver, int count) {
-        // 获取交易记录详情
-        List<WebElement> trList = webDriver.findElement(By.xpath(TRADE_TABLE_XPATH)).findElements(By.tagName("tr"));
-        log.info("交易记录数量 : {}", trList.size());
-
-        for (WebElement tr : trList) {
-            AlipayTradeRecord record = AlipayTradeRecord.builder().userId(1001L).build();
-
-            String date = tr.findElement(By.className(TRADE_DATE_CLASS)).getText();
-            Pattern p = Pattern.compile("\\s+");
-            Matcher m = p.matcher(date);
-            date = m.replaceAll(" ");
-            date = date.replaceAll("\\.", "-");
-            if (date.contains("今天")) {
-                date = date.replace("今天", LocalDate.now().toString("yyyy-MM-dd"));
-            }
-            log.info("交易时间 : {}", date);
-            Date payDate = null;
-            try {
-                payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            } catch (Exception e) {
-                payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd")).toDate();
-            }
-
-            record.setPayTime(payDate.getTime());
+            record.setPayTime(payDate);
 
             String recordStatus = tr.findElement(By.className(TRADE_STATUS_CLASS)).getText();
             log.info("交易状态 : {}", recordStatus);
@@ -198,10 +156,27 @@ public class AlipayCrawlTradeInfoService implements TradeElement {
             webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
             handles = new ArrayList<>(webDriver.getWindowHandles());//获取所有窗口句柄
             webDriver = webDriver.switchTo().window(handles.get(handles.size() - 1));
-            alipayTradeRecordMapper.insert(record);
+
+            log.info("alipay trade record : {}", record);
+            data.add(record);
             count++;
         }
         return count;
     }
 
+    @Override
+    public void save() {
+        for (AlipayTradeRecord record : data) {
+            try {
+                alipayTradeRecordMapper.insert(record);
+            } catch (Exception e) {
+                log.error("save alipay trade info error");
+            }
+        }
+    }
+
+    @Override
+    public boolean status() {
+        return true;
+    }
 }

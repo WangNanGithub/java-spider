@@ -1,11 +1,11 @@
 package com.example.spider.alipay.crawl;
 
-import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.SpringRunner;
 
 /**
@@ -26,14 +26,13 @@ public class AlipayCrawlTradeInfoServiceTest {
     private AlipayCrawlTradeInfoService alipayCrawlTradeInfoService;
 
     @Test
-    public void crawlTradeRecordInfo() throws InterruptedException {
+    @Commit
+    public void crawlTradeRecordInfo() throws Exception {
         String username = "";
         String password = "";
-
-        username = new String(Base64.decodeBase64(username));
-        password = new String(Base64.decodeBase64(password));
+        long userId = 1005L;
 
         WebDriver webDriver = alipayCrawlLoginService.login(username, password);
-        alipayCrawlTradeInfoService.crawlTradeRecordInfo(webDriver);
+        alipayCrawlTradeInfoService.crawl(webDriver, userId);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -25,26 +26,22 @@ import static org.junit.Assert.assertEquals;
 public class AlipayTradeRecordMapperTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Autowired
-    private AlipayTradeRecordMapper alipayListMapper;
+    private AlipayTradeRecordMapper alipayTradeRecordMapper;
 
     @Test
     public void insert() {
         AlipayTradeRecord alipayTradeRecord = AlipayTradeRecord.builder()
                 .userId(1001L)
-                .payTime(System.currentTimeMillis())
+                .payTime(new Date())
                 .tradeType("手机充值")
-                .tradeNoType("中国联通")
                 .tradeNo("1234567890")
                 .receiverName("test")
                 .amount(new BigDecimal("100.00"))
                 .status("success")
-                .source("taobao")
-                .alipayName("test")
-                .tradeClassification("test")
                 .tradeDetailUrl("http://www.test.com")
                 .build();
 
-        int insert = alipayListMapper.insert(alipayTradeRecord);
+        int insert = alipayTradeRecordMapper.insert(alipayTradeRecord);
         assertEquals(1, insert);
 
     }

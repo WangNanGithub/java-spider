@@ -8,6 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.Date;
+
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -29,14 +31,12 @@ public class AlipayBankCardMapperTest extends AbstractTransactionalJUnit4SpringC
     public void insert() {
         AlipayBankCard alipayBankCard = AlipayBankCard.builder()
                 .userId(1001L)
-                .alipayName("test")
                 .cardLastNum("1001")
                 .openStatus("yes")
-                .applyTime(System.currentTimeMillis())
                 .bankName("ABC")
                 .cardType("储蓄卡")
                 .mobile("133****3333")
-                .activeDate("2017-11-11")
+                .activeDate(new Date())
                 .showUserName("test")
                 .build();
 

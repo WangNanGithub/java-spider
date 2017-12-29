@@ -13,7 +13,7 @@ public interface HomeELement {
     /**
      * 登陆后首页元素
      */
-    String INDEX_URL = "https://my.alipay.com/portal/i.htm";                                            // 支付宝首页 URL
+    String HOME_URL = "https://my.alipay.com/portal/i.htm";                                            // 支付宝首页 URL
 
     /* 账户名 */
     String LOGIN_NAME_XPATH = "//*[@id=\"J-userInfo-account-userEmail\"]";                              // 登陆名

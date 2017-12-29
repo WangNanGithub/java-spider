@@ -26,15 +26,16 @@ public class AlipayCrawlChargeInfoServiceTest {
     private AlipayCrawlChargeInfoService alipayCrawlChargeInfoService;
 
     @Test
-    public void crawlChargeInfo() throws InterruptedException {
+    public void crawlChargeInfo() throws Exception {
         String username = "";
         String password = "";
+        long userId = 1001L;
 
         username = new String(Base64.decodeBase64(username));
         password = new String(Base64.decodeBase64(password));
 
         WebDriver webDriver = alipayCrawlLoginService.login(username, password);
-        alipayCrawlChargeInfoService.crawlChargeInfo(webDriver);
+        alipayCrawlChargeInfoService.crawlChargeInfo(webDriver, userId);
 
     }
 }

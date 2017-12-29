@@ -9,6 +9,7 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,17 +38,13 @@ public class AlipayInfoMapperTest extends AbstractTransactionalJUnit4SpringConte
                 .email("1234567@qq.com")
                 .phone("13333333333")
                 .taobaoName("test")
-                .registerDate("2017-11-11")
+                .registerDate(new Date())
                 .isRealName("yes")
                 .isProtected("yes")
-                .isPhone("yes")
-                .secretLevel("high")
                 .balance(new BigDecimal("1000.00"))
                 .income(new BigDecimal("1000.00"))
-                .isIdcard("yes")
                 .amount(new BigDecimal("1000.00"))
                 .totalAmount(new BigDecimal("1000.00"))
-                .needToPayNextMouth(new BigDecimal("1000.00"))
                 .build();
 
         int insert = alipayInfoMapper.insert(alipayInfo);

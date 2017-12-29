@@ -31,11 +31,6 @@ public class AlipayChargeAccount implements Serializable {
     private Long userId;
 
     /**
-     * 支付宝账户名
-     */
-    private String loginName;
-
-    /**
      * 缴费项目
      */
     private String chargeItem;

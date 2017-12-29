@@ -1,6 +1,5 @@
 package com.example.spider.alipay.crawl;
 
-import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
@@ -26,15 +25,13 @@ public class AlipayCrawlUserInfoServiceTest {
     private AlipayCrawlUserInfoService alipayCrawlUserInfoService;
 
     @Test
-    public void crawUserInfo() throws InterruptedException {
+    public void crawUserInfo() throws Exception {
         String username = "";
         String password = "";
-
-        username = new String(Base64.decodeBase64(username));
-        password = new String(Base64.decodeBase64(password));
+        long userId = 1001L;
 
         WebDriver webDriver = alipayCrawlLoginService.login(username, password);
-        alipayCrawlUserInfoService.crawUserInfo(webDriver);
+        alipayCrawlUserInfoService.crawUserInfo(webDriver, userId);
         webDriver.quit();
     }
 }

@@ -5,16 +5,12 @@
   <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayTradeRecord">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="pay_time" jdbcType="BIGINT" property="payTime" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
     <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
-    <result column="trade_no_type" jdbcType="VARCHAR" property="tradeNoType" />
     <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
     <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
     <result column="amount" jdbcType="DECIMAL" property="amount" />
     <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="source" jdbcType="VARCHAR" property="source" />
-    <result column="alipay_name" jdbcType="VARCHAR" property="alipayName" />
-    <result column="trade_classification" jdbcType="VARCHAR" property="tradeClassification" />
     <result column="trade_detail_url" jdbcType="VARCHAR" property="tradeDetailUrl" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -22,14 +18,11 @@
 
   <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayTradeRecord">
     insert into pdl_alipay_trade_record_info (user_id, pay_time, trade_type,
-    trade_no_type, trade_no, receiver_name,
-    amount, status, source,
-    alipay_name, trade_classification, trade_detail_url
+    trade_no, receiver_name, amount, status, trade_detail_url
     )
-    values (#{userId,jdbcType=BIGINT}, #{payTime,jdbcType=BIGINT}, #{tradeType,jdbcType=VARCHAR},
-    #{tradeNoType,jdbcType=VARCHAR}, #{tradeNo,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR},
-    #{amount,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR},
-    #{alipayName,jdbcType=VARCHAR}, #{tradeClassification,jdbcType=VARCHAR}, #{tradeDetailUrl,jdbcType=VARCHAR}
+    values (#{userId,jdbcType=BIGINT}, #{payTime,jdbcType=TIMESTAMP}, #{tradeType,jdbcType=VARCHAR},
+    #{tradeNo,jdbcType=VARCHAR}, #{receiverName,jdbcType=VARCHAR},
+    #{amount,jdbcType=DECIMAL}, #{status,jdbcType=VARCHAR}, #{tradeDetailUrl,jdbcType=VARCHAR}
     )
   </insert>
 </mapper>

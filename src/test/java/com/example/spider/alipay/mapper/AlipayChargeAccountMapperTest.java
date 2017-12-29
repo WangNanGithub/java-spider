@@ -29,7 +29,6 @@ public class AlipayChargeAccountMapperTest extends AbstractTransactionalJUnit4Sp
     public void insert() {
         AlipayChargeAccount chargeAccount = AlipayChargeAccount.builder()
                 .userId(1001L)
-                .loginName("test")
                 .chargeItem("phone")
                 .area("beijing")
                 .chargeUnit("中国联通")

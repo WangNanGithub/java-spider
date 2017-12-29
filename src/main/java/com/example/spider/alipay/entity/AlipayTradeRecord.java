@@ -34,17 +34,12 @@ public class AlipayTradeRecord implements Serializable {
     /**
      * 支付时间
      */
-    private Long payTime;
+    private Date payTime;
 
     /**
      * 交易名称
      */
     private String tradeType;
-
-    /**
-     * 对方交易账户
-     */
-    private String tradeNoType;
 
     /**
      * 交易号
@@ -65,21 +60,6 @@ public class AlipayTradeRecord implements Serializable {
      * 交易状态
      */
     private String status;
-
-    /**
-     * 来源
-     */
-    private String source;
-
-    /**
-     * 支付宝账户名
-     */
-    private String alipayName;
-
-    /**
-     * 支付宝交易分类
-     */
-    private String tradeClassification;
 
     /**
      * 支付宝交易详情url

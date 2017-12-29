@@ -64,7 +64,7 @@ public class AlipayInfo implements Serializable {
     /**
      * 注册日期
      */
-    private String registerDate;
+    private Date registerDate;
 
     /**
      * 是否实名认证
@@ -77,16 +77,6 @@ public class AlipayInfo implements Serializable {
     private String isProtected;
 
     /**
-     * 是否绑定手机
-     */
-    private String isPhone;
-
-    /**
-     * 安全等级
-     */
-    private String secretLevel;
-
-    /**
      * 账户余额
      */
     private BigDecimal balance;
@@ -95,11 +85,6 @@ public class AlipayInfo implements Serializable {
      * 余额宝总收入
      */
     private BigDecimal income;
-
-    /**
-     * 是否身份证认证
-     */
-    private String isIdcard;
 
     /**
      * 余额宝总金额
@@ -115,11 +100,6 @@ public class AlipayInfo implements Serializable {
      * 花呗可用额度
      */
     private BigDecimal availableAmount;
-
-    /**
-     * 花呗下期需还
-     */
-    private BigDecimal needToPayNextMouth;
 
     /**
      * 创建时间

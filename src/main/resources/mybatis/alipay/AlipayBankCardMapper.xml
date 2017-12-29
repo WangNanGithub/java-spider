@@ -5,27 +5,26 @@
   <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayBankCard">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="alipay_name" jdbcType="VARCHAR" property="alipayName" />
     <result column="card_last_num" jdbcType="VARCHAR" property="cardLastNum" />
     <result column="open_status" jdbcType="VARCHAR" property="openStatus" />
     <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
     <result column="card_type" jdbcType="VARCHAR" property="cardType" />
     <result column="mobile" jdbcType="VARCHAR" property="mobile" />
-    <result column="active_date" jdbcType="VARCHAR" property="activeDate" />
+    <result column="active_date" jdbcType="TIMESTAMP" property="activeDate" />
     <result column="show_user_name" jdbcType="VARCHAR" property="showUserName" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
 
   <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayBankCard">
-    insert into pdl_alipay_bank_card (user_id, alipay_name, card_last_num,
-    open_status, apply_time, bank_name,
+    insert into pdl_alipay_bank_card (user_id, card_last_num,
+    open_status, bank_name,
     card_type, mobile, active_date,
     show_user_name
     )
-    values (#{userId,jdbcType=BIGINT}, #{alipayName,jdbcType=VARCHAR}, #{cardLastNum,jdbcType=VARCHAR},
-    #{openStatus,jdbcType=VARCHAR}, #{applyTime,jdbcType=BIGINT}, #{bankName,jdbcType=VARCHAR},
-    #{cardType,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{activeDate,jdbcType=VARCHAR},
+    values (#{userId,jdbcType=BIGINT}, #{cardLastNum,jdbcType=VARCHAR},
+    #{openStatus,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR},
+    #{cardType,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{activeDate,jdbcType=TIMESTAMP},
     #{showUserName,jdbcType=VARCHAR}
     )
   </insert>

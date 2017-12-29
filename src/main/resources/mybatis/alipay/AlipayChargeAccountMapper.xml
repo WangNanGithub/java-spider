@@ -5,7 +5,6 @@
   <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayChargeAccount">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
     <result column="charge_item" jdbcType="VARCHAR" property="chargeItem" />
     <result column="area" jdbcType="VARCHAR" property="area" />
     <result column="charge_unit" jdbcType="VARCHAR" property="chargeUnit" />
@@ -17,11 +16,11 @@
   </resultMap>
 
   <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayChargeAccount">
-    insert into pdl_alipay_charge_account (user_id, login_name, charge_item,
+    insert into pdl_alipay_charge_account (user_id, charge_item,
     area, charge_unit, charge_account,
     charge_number, charge_reminder
     )
-    values (#{userId,jdbcType=BIGINT}, #{loginName,jdbcType=VARCHAR}, #{chargeItem,jdbcType=VARCHAR},
+    values (#{userId,jdbcType=BIGINT}, #{chargeItem,jdbcType=VARCHAR},
     #{area,jdbcType=VARCHAR}, #{chargeUnit,jdbcType=VARCHAR}, #{chargeAccount,jdbcType=VARCHAR},
     #{chargeNumber,jdbcType=VARCHAR}, #{chargeReminder,jdbcType=VARCHAR}
     )

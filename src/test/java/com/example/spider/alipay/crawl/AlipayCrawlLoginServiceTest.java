@@ -32,17 +32,18 @@ public class AlipayCrawlLoginServiceTest {
     private AlipayCrawlTradeInfoService alipayCrawlTradeInfoService;
 
     @Test
-    public void login() throws InterruptedException {
+    public void login() throws Exception {
         String username = "";
         String password = "";
+        long userId = 1001L;
 
         username = new String(Base64.decodeBase64(username));
         password = new String(Base64.decodeBase64(password));
 
         WebDriver webDriver = alipayCrawlLoginService.login(username, password);
-        alipayCrawlUserInfoService.crawUserInfo(webDriver);
-        alipayCrawlBankCardInfoService.crawlBankCardInfo(webDriver);
-        alipayCrawlChargeInfoService.crawlChargeInfo(webDriver);
-        alipayCrawlTradeInfoService.crawlTradeRecordInfo(webDriver);
+        alipayCrawlUserInfoService.crawUserInfo(webDriver, userId);
+        alipayCrawlBankCardInfoService.crawlBankCardInfo(webDriver, userId);
+        alipayCrawlChargeInfoService.crawlChargeInfo(webDriver, userId);
+        alipayCrawlTradeInfoService.crawl(webDriver, userId);
     }
 }
