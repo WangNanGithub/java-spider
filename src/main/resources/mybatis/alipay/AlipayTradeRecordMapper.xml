@@ -2,21 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spider.alipay.mapper.AlipayTradeRecordMapper">
 
-  <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayTradeRecord">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
-    <result column="trade_type" jdbcType="VARCHAR" property="tradeType" />
-    <result column="trade_no" jdbcType="VARCHAR" property="tradeNo" />
-    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
-    <result column="amount" jdbcType="DECIMAL" property="amount" />
-    <result column="status" jdbcType="VARCHAR" property="status" />
-    <result column="trade_detail_url" jdbcType="VARCHAR" property="tradeDetailUrl" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayTradeRecord">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
+        <result column="trade_type" jdbcType="VARCHAR" property="tradeType"/>
+        <result column="trade_no" jdbcType="VARCHAR" property="tradeNo"/>
+        <result column="receiver_name" jdbcType="VARCHAR" property="receiverName"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="status" jdbcType="VARCHAR" property="status"/>
+        <result column="trade_detail_url" jdbcType="VARCHAR" property="tradeDetailUrl"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
 
-  <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayTradeRecord">
+    <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayTradeRecord">
     insert into pdl_alipay_trade_record_info (user_id, pay_time, trade_type,
     trade_no, receiver_name, amount, status, trade_detail_url
     )

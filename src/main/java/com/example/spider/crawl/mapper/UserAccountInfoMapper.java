@@ -19,7 +19,7 @@ import org.apache.ibatis.annotations.Select;
 public interface UserAccountInfoMapper {
 
     @Select("SELECT username, password FROM pdl_user_account WHERE user_id = #{userId} AND type = #{type, typeHandler=org.apache.ibatis.type.EnumTypeHandler}")
-    UserAccount findByUserIdAndType(@Param("userId") long userId, @Param("type")CrawlType type);
+    UserAccount findByUserIdAndType(@Param("userId") long userId, @Param("type") CrawlType type);
 
     @Insert("INSERT INTO pdl_user_account(user_id, type, username, password) VALUE(#{userId}, #{type, typeHandler=org.apache.ibatis.type.EnumTypeHandler}, #{username}, #{password})")
     int insert(UserAccount account);

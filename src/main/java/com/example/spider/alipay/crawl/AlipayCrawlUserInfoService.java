@@ -1,7 +1,7 @@
 package com.example.spider.alipay.crawl;
 
 import com.example.spider.alipay.constants.AccountElement;
-import com.example.spider.alipay.constants.HomeELement;
+import com.example.spider.alipay.constants.HomeElement;
 import com.example.spider.alipay.entity.AlipayInfo;
 import com.example.spider.alipay.mapper.AlipayInfoMapper;
 import com.example.spider.crawl.annotation.Crawl;
@@ -31,7 +31,7 @@ import static com.example.spider.crawl.entity.CrawlType.ZHI_FU_BAO;
 @Slf4j
 @Crawl(name = ZHI_FU_BAO)
 @Service
-public class AlipayCrawlUserInfoService implements CrawlService<AlipayInfo>, HomeELement, AccountElement {
+public class AlipayCrawlUserInfoService implements CrawlService<AlipayInfo>, HomeElement, AccountElement {
 
     @Autowired
     private AlipayInfoMapper alipayInfoMapper;

@@ -8,7 +8,7 @@ package com.example.spider.alipay.constants;
  * Date: 2017-12-27
  * Time: 下午2:31
  */
-public interface BankCardELement {
+public interface BankCardElement {
 
     /**
      * 绑定的银行卡

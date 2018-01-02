@@ -1,6 +1,6 @@
 package com.example.spider.alipay.crawl;
 
-import com.example.spider.alipay.constants.BankCardELement;
+import com.example.spider.alipay.constants.BankCardElement;
 import com.example.spider.alipay.entity.AlipayBankCard;
 import com.example.spider.alipay.mapper.AlipayBankCardMapper;
 import com.example.spider.crawl.annotation.Crawl;
@@ -36,7 +36,7 @@ import static com.example.spider.util.StringUtil.matchPhone;
 @Slf4j
 @Crawl(name = ZHI_FU_BAO)
 @Service
-public class AlipayCrawlBankCardInfoService implements CrawlService<AlipayBankCard>, BankCardELement {
+public class AlipayCrawlBankCardInfoService implements CrawlService<AlipayBankCard>, BankCardElement {
 
     @Autowired
     private AlipayBankCardMapper alipayBankCardMapper;

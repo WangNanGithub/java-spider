@@ -12,7 +12,7 @@ import lombok.Getter;
  * Time: 下午3:57
  */
 @AllArgsConstructor
-public enum  CrawlType {
+public enum CrawlType {
 
     ZHI_FU_BAO("支付宝");
 

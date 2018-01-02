@@ -8,7 +8,7 @@ package com.example.spider.alipay.constants;
  * Date: 2017-12-27
  * Time: 下午1:59
  */
-public interface HomeELement {
+public interface HomeElement {
 
     /**
      * 登陆后首页元素
@@ -34,9 +34,9 @@ public interface HomeELement {
 
     // 账户设置
     String ACCOUNT_SET_XPATH = "//*[@id=\"globalContainer\"]/div[2]/div/div[2]/ul/li[3]/a";             // 账户设置超链接
-    String ACCOUNT_SET_URL= "https://my.alipay.com/portal/account/index.htm";                           // 账户设置地址
+    String ACCOUNT_SET_URL = "https://my.alipay.com/portal/account/index.htm";                          // 账户设置地址
 
     // 银行卡
-    String BANK_CARD_XPATH= "//*[@id=\"J-assets-other-zht\"]/ul/li[1]/span/a";                          // 银行卡管理
-    String BANK_CARD_URL= "https://zht.alipay.com/asset/bankList.htm";                                  // 银行卡管理 URL
+    String BANK_CARD_XPATH = "//*[@id=\"J-assets-other-zht\"]/ul/li[1]/span/a";                          // 银行卡管理
+    String BANK_CARD_URL = "https://zht.alipay.com/asset/bankList.htm";                                  // 银行卡管理 URL
 }

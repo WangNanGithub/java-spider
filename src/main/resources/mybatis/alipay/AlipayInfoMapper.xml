@@ -2,28 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spider.alipay.mapper.AlipayInfoMapper">
 
-  <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayInfo">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
-    <result column="real_name" jdbcType="VARCHAR" property="realName" />
-    <result column="id_card" jdbcType="VARCHAR" property="idCard" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="taobao_name" jdbcType="VARCHAR" property="taobaoName" />
-    <result column="register_date" jdbcType="TIMESTAMP" property="registerDate" />
-    <result column="is_real_name" jdbcType="VARCHAR" property="isRealName" />
-    <result column="is_protected" jdbcType="VARCHAR" property="isProtected" />
-    <result column="balance" jdbcType="DECIMAL" property="balance" />
-    <result column="income" jdbcType="DECIMAL" property="income" />
-    <result column="amount" jdbcType="DECIMAL" property="amount" />
-    <result column="total_amount" jdbcType="DECIMAL" property="totalAmount" />
-    <result column="available_amount" jdbcType="DECIMAL" property="availableAmount" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="id_card" jdbcType="VARCHAR" property="idCard"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="taobao_name" jdbcType="VARCHAR" property="taobaoName"/>
+        <result column="register_date" jdbcType="TIMESTAMP" property="registerDate"/>
+        <result column="is_real_name" jdbcType="VARCHAR" property="isRealName"/>
+        <result column="is_protected" jdbcType="VARCHAR" property="isProtected"/>
+        <result column="balance" jdbcType="DECIMAL" property="balance"/>
+        <result column="income" jdbcType="DECIMAL" property="income"/>
+        <result column="amount" jdbcType="DECIMAL" property="amount"/>
+        <result column="total_amount" jdbcType="DECIMAL" property="totalAmount"/>
+        <result column="available_amount" jdbcType="DECIMAL" property="availableAmount"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
 
-  <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayInfo">
+    <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayInfo">
     insert into pdl_alipay_info (user_id, login_name, real_name,
     id_card, email, phone,
     taobao_name, register_date, is_real_name,

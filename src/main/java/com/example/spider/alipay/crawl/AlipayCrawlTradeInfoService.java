@@ -45,7 +45,7 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
 
     private List<AlipayTradeRecord> data = new ArrayList<>();
 
-    enum PageType{
+    enum PageType {
         HOME, LIST
     }
 
@@ -88,7 +88,7 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
         return webDriver;
     }
 
-    private int crawlTradeRecordInfoFromHomePage(WebDriver webDriver, Long userId, int count) throws Exception{
+    private int crawlTradeRecordInfoFromHomePage(WebDriver webDriver, Long userId, int count) throws Exception {
         webDriver.navigate().to(HOME_URL);
         webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         // 获取交易记录详情
