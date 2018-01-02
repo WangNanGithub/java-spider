@@ -17,11 +17,7 @@
     </resultMap>
 
     <insert id="insert" parameterType="AlipayBankCard">
-        INSERT INTO pdl_alipay_bank_card (
-            user_id, card_last_num, open_status, bank_name, card_type, mobile, active_date, show_user_name
-        )
-        VALUES (
-            #{userId}, #{cardLastNum}, #{openStatus}, #{bankName}, #{cardType}, #{mobile}, #{activeDate}, #{showUserName}
-        )
+        INSERT INTO pdl_alipay_bank_card (user_id, card_last_num, open_status, bank_name, card_type, mobile, active_date, show_user_name)
+        VALUES (#{userId}, #{cardLastNum}, #{openStatus}, #{bankName}, #{cardType}, #{mobile}, #{activeDate}, #{showUserName})
     </insert>
 </mapper>
