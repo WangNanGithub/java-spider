@@ -85,7 +85,7 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
         return webDriver;
     }
 
-    private int crawlTradeRecordInfo(WebDriver webDriver, Long userId, int count) throws Exception{
+    private int crawlTradeRecordInfo(WebDriver webDriver, Long userId, int count) throws Exception {
         // 获取交易记录详情
         List<WebElement> trList = webDriver.findElement(By.xpath(TRADE_TABLE_XPATH)).findElements(By.tagName("tr"));
         log.info("交易记录数量 : {}", trList.size());
@@ -101,7 +101,7 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
             if (date.contains("今天")) {
                 date = date.replace("今天", LocalDate.now().toString("yyyy-MM-dd"));
             } else if (date.contains("昨天")) {
-                date = date.replace("今天", LocalDate.now().plusDays(-1).toString("yyyy-MM-dd"));
+                date = date.replace("昨天", LocalDate.now().plusDays(-1).toString("yyyy-MM-dd"));
             }
             log.info("交易时间 : {}", date);
             Date payDate = null;
@@ -121,40 +121,62 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
             log.info("交易状态 : {}", recordStatus);
             record.setStatus(recordStatus);
 
-            String detail = tr.findElement(By.className(TradeElement.TRADE_DETAIL_CLASS)).findElement(By.className(TRADE_DETAIL_URL_CLASS)).getAttribute("href");
-            log.info("交易详情 URL : {}", detail);
-            record.setTradeDetailUrl(detail);
+            String detail = null;
+            try {
+                detail = tr.findElement(By.className(TradeElement.TRADE_DETAIL_CLASS)).findElement(By.className(TRADE_DETAIL_URL_CLASS)).getAttribute("href");
+                log.info("交易详情 URL : {}", detail);
+                record.setTradeDetailUrl(detail);
 
-            // 打开新窗口
-            JavascriptExecutor executor = (JavascriptExecutor) webDriver;
-            executor.executeScript("window.open('" + detail + "')");
-            webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+                // 打开新窗口
+                JavascriptExecutor executor = (JavascriptExecutor) webDriver;
+                executor.executeScript("window.open('" + detail + "')");
+                webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
-            // 获取所有窗口句柄
-            List<String> handles = new ArrayList<>(webDriver.getWindowHandles());
-            WebDriver newDiver = webDriver.switchTo().window(handles.get(handles.size() - 1));
+                // 获取所有窗口句柄
+                List<String> handles = new ArrayList<>(webDriver.getWindowHandles());
+                WebDriver newDiver = webDriver.switchTo().window(handles.get(handles.size() - 1));
 
-            String recordName = newDiver.findElement(By.xpath(DETAIL_TRADE_TITLE_XPATH)).getText();
-            log.info("交易名称 : {}", recordName);
-            record.setTradeType(recordName);
+                String recordName = newDiver.findElement(By.xpath(DETAIL_TRADE_TITLE_XPATH)).getText();
+                log.info("交易名称 : {}", recordName);
+                record.setTradeType(recordName);
 
-            String name = newDiver.findElement(By.xpath(DETAIL_TRADE_NAME_XPATH)).getText();
-            log.info("收款方名称 : {}", name);
-            name = name.split(":|：")[1];
-            record.setReceiverName(name);
+                String name = newDiver.findElement(By.xpath(DETAIL_TRADE_NAME_XPATH)).getText();
+                log.info("收款方名称 : {}", name);
+                name = name.split(":|：")[1];
+                record.setReceiverName(name);
 
-            String number = newDiver.findElement(By.xpath(DETAIL_TRADE_NO_XPATH)).getText();
-            log.info("交易号 : {}", number);
-            number = number.split(":|：")[1];
-            record.setTradeNo(number);
+                String number = newDiver.findElement(By.xpath(DETAIL_TRADE_NO_XPATH)).getText();
+                log.info("交易号 : {}", number);
+                number = number.split(":|：")[1];
+                record.setTradeNo(number);
 
-            String recordAmount = newDiver.findElement(By.xpath(DETAIL_TRADE_AMOUNT_XPATH)).getText();
-            log.info("交易金额 : {}", recordAmount);
-            record.setAmount(new BigDecimal(recordAmount));
+                String recordAmount = newDiver.findElement(By.xpath(DETAIL_TRADE_AMOUNT_XPATH)).getText();
+                log.info("交易金额 : {}", recordAmount);
+                record.setAmount(new BigDecimal(recordAmount));
 
-            newDiver.close();
+                newDiver.close();
+            } catch (Exception e) {
+                String recordName = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_TITLE_CLASS)).getText();
+                log.info("交易名称 : {}", recordName);
+                record.setTradeType(recordName);
+
+                String name = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_NAME_CLASS)).getText();
+                log.info("收款方名称 : {}", name);
+                name = name.split(":|：")[1];
+                record.setReceiverName(name);
+
+                String number = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_NO_CLASS)).getAttribute("title");
+                log.info("交易号 : {}", number);
+                number = number.split(":|：")[1];
+                record.setTradeNo(number);
+
+                String recordAmount = tr.findElement(By.className(TRADE_AMOUNT_CLASS)).getText();
+                log.info("交易金额 : {}", recordAmount);
+                record.setAmount(new BigDecimal(recordAmount));
+            }
+
             webDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-            handles = new ArrayList<>(webDriver.getWindowHandles());//获取所有窗口句柄
+            List<String> handles = new ArrayList<>(webDriver.getWindowHandles());//获取所有窗口句柄
             webDriver = webDriver.switchTo().window(handles.get(handles.size() - 1));
 
             log.info("alipay trade record : {}", record);
