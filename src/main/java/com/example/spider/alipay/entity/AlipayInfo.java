@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -18,9 +19,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Builder
+@Alias("AlipayInfo")
 public class AlipayInfo implements Serializable {
 
     private static final long serialVersionUID = -8874624992010623764L;
+
     /**
      * ID
      */

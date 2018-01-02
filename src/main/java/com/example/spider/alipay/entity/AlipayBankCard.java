@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.ibatis.type.Alias;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -17,9 +18,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Data
 @Builder
+@Alias("AlipayBankCard")
 public class AlipayBankCard implements Serializable {
 
     private static final long serialVersionUID = -1826148112176258071L;
+
     /**
      * ID
      */

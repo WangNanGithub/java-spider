@@ -39,7 +39,7 @@ public class AlipayCrawlBankCardInfoService implements CrawlService<AlipayBankCa
     @Autowired
     private AlipayBankCardMapper alipayBankCardMapper;
 
-    List<AlipayBankCard> data = new ArrayList<>();
+    private List<AlipayBankCard> data = new ArrayList<>();
 
     @Override
     public WebDriver crawl(WebDriver webDriver, Long userId) throws Exception {

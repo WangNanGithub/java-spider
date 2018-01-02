@@ -33,7 +33,7 @@ public class AlipayCrawlChargeInfoService implements CrawlService<AlipayChargeAc
     @Autowired
     private AlipayChargeAccountMapper alipayChargeAccountMapper;
 
-    List<AlipayChargeAccount> data = new ArrayList<>();
+    private List<AlipayChargeAccount> data = new ArrayList<>();
 
     @Override
     public WebDriver crawl(WebDriver webDriver, Long userId) throws Exception {
