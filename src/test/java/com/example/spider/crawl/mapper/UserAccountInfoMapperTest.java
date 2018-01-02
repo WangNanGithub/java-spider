@@ -10,8 +10,6 @@ import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
 /**

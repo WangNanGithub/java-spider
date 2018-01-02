@@ -21,9 +21,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static com.example.spider.crawl.entity.CrawlType.ZHI_FU_BAO;
-import static com.example.spider.util.StringUtil.match;
-import static com.example.spider.util.StringUtil.matchDate;
-import static com.example.spider.util.StringUtil.matchPhone;
+import static com.example.spider.util.StringUtil.*;
 
 /**
  * Created with IntelliJ IDEA.
