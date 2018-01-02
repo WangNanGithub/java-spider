@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.spider.alipay.mapper.AlipayBankCardMapper">
 
-    <resultMap id="BaseResultMap" type="com.example.spider.alipay.entity.AlipayBankCard">
+    <resultMap id="BaseResultMap" type="AlipayBankCard">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="user_id" jdbcType="BIGINT" property="userId"/>
         <result column="card_last_num" jdbcType="VARCHAR" property="cardLastNum"/>
@@ -16,7 +16,7 @@
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.example.spider.alipay.entity.AlipayBankCard">
+    <insert id="insert" parameterType="AlipayBankCard">
         INSERT INTO pdl_alipay_bank_card (
             user_id, card_last_num, open_status, bank_name, card_type, mobile, active_date, show_user_name
         )
