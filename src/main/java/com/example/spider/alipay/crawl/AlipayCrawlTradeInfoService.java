@@ -25,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.example.spider.crawl.entity.CrawlType.ZHI_FU_BAO;
+import static com.example.spider.util.StringUtil.matchDate;
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,6 +45,10 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
 
     private List<AlipayTradeRecord> data = new ArrayList<>();
 
+    enum PageType{
+        HOME, LIST
+    }
+
     /**
      * 抓取交易记录信息
      */
@@ -61,13 +66,11 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
 
             // 抓取数据
             try {
-                count = crawlTradeRecordInfo(webDriver, userId, count);
+                count = crawlTradeRecordInfoFromListPage(webDriver, userId, count);
             } catch (Exception e) {
                 log.error("trade info error!", e);
                 if (count == 0) {
-                    webDriver.navigate().to(HOME_URL);
-                    webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-                    crawlTradeRecordInfo(webDriver, userId, count);
+                    crawlTradeRecordInfoFromHomePage(webDriver, userId, count);
                 }
                 break;
             }
@@ -85,7 +88,9 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
         return webDriver;
     }
 
-    private int crawlTradeRecordInfo(WebDriver webDriver, Long userId, int count) throws Exception {
+    private int crawlTradeRecordInfoFromHomePage(WebDriver webDriver, Long userId, int count) throws Exception{
+        webDriver.navigate().to(HOME_URL);
+        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         // 获取交易记录详情
         List<WebElement> trList = webDriver.findElement(By.xpath(TRADE_TABLE_XPATH)).findElements(By.tagName("tr"));
         log.info("交易记录数量 : {}", trList.size());
@@ -94,36 +99,15 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
             AlipayTradeRecord record = AlipayTradeRecord.builder().userId(userId).build();
 
             String date = tr.findElement(By.className(TRADE_DATE_CLASS)).getText();
-            Pattern p = Pattern.compile("\\s+");
-            Matcher m = p.matcher(date);
-            date = m.replaceAll(" ");
-            date = date.replaceAll("\\.", "-");
-            if (date.contains("今天")) {
-                date = date.replace("今天", LocalDate.now().toString("yyyy-MM-dd"));
-            } else if (date.contains("昨天")) {
-                date = date.replace("昨天", LocalDate.now().plusDays(-1).toString("yyyy-MM-dd"));
-            }
-            log.info("交易时间 : {}", date);
-            Date payDate = null;
-            try {
-                payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
-            } catch (Exception e) {
-                try {
-                    payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd")).toDate();
-                } catch (Exception e1) {
-                    payDate = LocalDateTime.parse(date, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm")).toDate();
-                }
-            }
-
+            Date payDate = parseTradeDate(date);
             record.setPayTime(payDate);
 
             String recordStatus = tr.findElement(By.className(TRADE_STATUS_CLASS)).getText();
             log.info("交易状态 : {}", recordStatus);
             record.setStatus(recordStatus);
 
-            String detail = null;
             try {
-                detail = tr.findElement(By.className(TradeElement.TRADE_DETAIL_CLASS)).findElement(By.className(TRADE_DETAIL_URL_CLASS)).getAttribute("href");
+                String detail = tr.findElement(By.className(TradeElement.TRADE_DETAIL_CLASS)).findElement(By.className(TRADE_DETAIL_URL_CLASS)).getAttribute("href");
                 log.info("交易详情 URL : {}", detail);
                 record.setTradeDetailUrl(detail);
 
@@ -186,6 +170,80 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
         return count;
     }
 
+    private int crawlTradeRecordInfoFromListPage(WebDriver webDriver, Long userId, int count) throws Exception {
+        // 获取交易记录详情
+        List<WebElement> trList = webDriver.findElement(By.xpath(TRADE_TABLE_XPATH)).findElements(By.tagName("tr"));
+        log.info("交易记录数量 : {}", trList.size());
+
+        for (WebElement tr : trList) {
+            AlipayTradeRecord record = AlipayTradeRecord.builder().userId(userId).build();
+
+            try {
+                String date = tr.findElement(By.className(TRADE_DATE_CLASS)).getText();
+                Date payDate = parseTradeDate(date);
+                log.info("交易时间 : {}", payDate);
+                record.setPayTime(payDate);
+            } catch (Exception e) {
+                log.error("交易时间获取失败！");
+            }
+
+            try {
+                String recordStatus = tr.findElement(By.className(TRADE_STATUS_CLASS)).getText();
+                log.info("交易状态 : {}", recordStatus);
+                record.setStatus(recordStatus);
+            } catch (Exception e) {
+                log.error("交易状态获取失败！");
+            }
+
+            try {
+                String recordName = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_TITLE_CLASS)).getText();
+                log.info("交易名称 : {}", recordName);
+                record.setTradeType(recordName);
+            } catch (Exception e) {
+                log.error("交易名称获取失败！");
+            }
+
+            try {
+                String name = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_NAME_CLASS)).getText();
+                log.info("收款方名称 : {}", name);
+                name = name.split(":|：")[1];
+                record.setReceiverName(name);
+            } catch (Exception e) {
+                log.error("收款方名称获取失败！");
+            }
+
+            try {
+                String number = tr.findElement(By.className(TRADE_NAME_CLASS)).findElement(By.className(TRADE_DETAIL_NO_CLASS)).getAttribute("title");
+                number = number.split(":|：")[1];
+                log.info("交易号 : {}", number);
+                record.setTradeNo(number);
+            } catch (Exception e) {
+                log.error("交易号获取失败！");
+            }
+
+            try {
+                String recordAmount = tr.findElement(By.className(TRADE_AMOUNT_CLASS)).getText();
+                log.info("交易金额 : {}", recordAmount);
+                record.setAmount(new BigDecimal(recordAmount));
+            } catch (Exception e) {
+                log.error("交易金额获取失败！");
+            }
+
+            try {
+                String detail = tr.findElement(By.className(TradeElement.TRADE_DETAIL_CLASS)).findElement(By.className(TRADE_DETAIL_URL_CLASS)).getAttribute("href");
+                log.info("交易详情 URL : {}", detail);
+                record.setTradeDetailUrl(detail);
+            } catch (Exception e) {
+                log.error("交易详情 URL 获取失败！");
+            }
+
+            log.info("alipay trade record : {}", record);
+            data.add(record);
+            count++;
+        }
+        return count;
+    }
+
     @Override
     public void save() {
         for (AlipayTradeRecord record : data) {
@@ -200,5 +258,35 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
     @Override
     public boolean status() {
         return true;
+    }
+
+    private Date parseTradeDate(String dateStr) {
+        Date payDate;
+        try {
+            Pattern p = Pattern.compile("\\s+");
+            Matcher m = p.matcher(dateStr);
+            dateStr = m.replaceAll(" ");
+            dateStr = dateStr.replaceAll("\\.", "-");
+            dateStr = matchDate(dateStr);
+
+            if (dateStr.contains("今天")) {
+                dateStr = dateStr.replace("今天", LocalDate.now().toString("yyyy-MM-dd"));
+            } else if (dateStr.contains("昨天")) {
+                dateStr = dateStr.replace("昨天", LocalDate.now().plusDays(-1).toString("yyyy-MM-dd"));
+            }
+
+            payDate = LocalDateTime.parse(dateStr, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")).toDate();
+        } catch (Exception e) {
+            try {
+                payDate = LocalDateTime.parse(dateStr, DateTimeFormat.forPattern("yyyy-MM-dd")).toDate();
+            } catch (Exception e1) {
+                try {
+                    payDate = LocalDateTime.parse(dateStr, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm")).toDate();
+                } catch (Exception e2) {
+                    return null;
+                }
+            }
+        }
+        return payDate;
     }
 }

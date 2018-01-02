@@ -36,4 +36,6 @@ public interface TradeElement {
     String DETAIL_TRADE_NAME_XPATH = "//*[@id=\"fundDom\"]/div[1]/p[2]/span";
     String DETAIL_TRADE_NO_XPATH = "//*[@id=\"fundDom\"]/div[1]/p[3]/span";
     String DETAIL_TRADE_AMOUNT_XPATH = "//*[@id=\"fundDom\"]/div[2]/table/tbody/tr[1]/td[1]";
+    String DETAIL_TRADE_STATUS_XPATH = "//*[@id=\"content\"]/div[1]/div/div[2]/span[2]";
+    String DETAIL_TRADE_DATE_XPATH = "//*[@id=\"fundDom\"]/div[2]/div/span[1]";
 }
