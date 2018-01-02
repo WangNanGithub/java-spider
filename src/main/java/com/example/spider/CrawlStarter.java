@@ -74,23 +74,25 @@ public class CrawlStarter implements ApplicationContextAware {
                     } catch (IllegalAccessException | InvocationTargetException e) {
                         log.error("invoke method error!");
                     }
-                } else try {
-                    Object object = applicationContext.getBean(aClass);
-                    // 判断当前抓取方法是否需要执行
-                    Method statusMethod = aClass.getMethod("status");
-                    boolean status = (boolean) statusMethod.invoke(object);
-                    if (status) {
-                        // 抓取数据
-                        Method crawl = aClass.getMethod("crawl", WebDriver.class, Long.class);
-                        webDriver = (WebDriver) crawl.invoke(object, webDriver, userId);
-                        // 保存数据
-                        Method save = aClass.getMethod("save");
-                        save.invoke(object);
+                } else {
+                    try {
+                        Object object = applicationContext.getBean(aClass);
+                        // 判断当前抓取方法是否需要执行
+                        Method statusMethod = aClass.getMethod("status");
+                        boolean status = (boolean) statusMethod.invoke(object);
+                        if (status) {
+                            // 抓取数据
+                            Method crawl = aClass.getMethod("crawl", WebDriver.class, Long.class);
+                            webDriver = (WebDriver) crawl.invoke(object, webDriver, userId);
+                            // 保存数据
+                            Method save = aClass.getMethod("save");
+                            save.invoke(object);
+                        }
+                    } catch (NoSuchMethodException e) {
+                        log.error("can not found crawl method with (WebDriver)!");
+                    } catch (IllegalAccessException | InvocationTargetException e) {
+                        log.error("invoke method error!");
                     }
-                } catch (NoSuchMethodException e) {
-                    log.error("can not found crawl method with (WebDriver)!");
-                } catch (IllegalAccessException | InvocationTargetException e) {
-                    log.error("invoke method error!");
                 }
             }
             if (webDriver != null) {

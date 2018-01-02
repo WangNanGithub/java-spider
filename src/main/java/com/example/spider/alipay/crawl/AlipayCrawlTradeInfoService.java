@@ -70,7 +70,7 @@ public class AlipayCrawlTradeInfoService implements CrawlService, TradeElement {
             } catch (Exception e) {
                 log.error("trade info error!", e);
                 if (count == 0) {
-                    crawlTradeRecordInfoFromHomePage(webDriver, userId, count);
+                    count = crawlTradeRecordInfoFromHomePage(webDriver, userId, count);
                 }
                 break;
             }
