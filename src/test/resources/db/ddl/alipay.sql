@@ -34,7 +34,7 @@ CREATE TABLE `pdl_alipay_trade_record_info` (
   `user_id` bigint(20) NOT NULL COMMENT '用户 ID',
   `pay_time` datetime DEFAULT NULL COMMENT '支付时间',
   `trade_type` VARCHAR(255) DEFAULT NULL COMMENT '交易名称',
-  `trade_no` VARCHAR(255) UNIQUE DEFAULT NULL COMMENT '交易号',
+  `trade_no` VARCHAR(255) DEFAULT NULL COMMENT '交易号',
   `receiver_name` VARCHAR(50) DEFAULT NULL COMMENT '接收人',
   `amount` DECIMAL(30,6) DEFAULT NULL COMMENT '交易金额',
   `status` VARCHAR(50) DEFAULT NULL COMMENT '交易状态',
